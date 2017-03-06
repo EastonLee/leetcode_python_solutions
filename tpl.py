@@ -2,8 +2,9 @@ import unittest
 from pprint import pprint
 import re
 import cProfile
-from heapq import *
+import heapq
 import collections
+import itertools
 
 '''
 
