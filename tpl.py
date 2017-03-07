@@ -18,7 +18,7 @@ class TreeNode(object):
         self.val = x
         self.left = None
         self.right = None
-
+clone
     def __repr__(self):
         return 'value: {}'.format(self.val)
 
