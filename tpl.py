@@ -51,7 +51,7 @@ class Test(unittest.TestCase):
     def test(self):
         case = "1+7-(7+3+3)+6-3+1"
         assert Solution().calculate(case) == -1
-        #cProfile.runctx('Solution().calculate(case)', globals(), locals())
+        #cProfile.runctx('Solution().calculate(case)', globals(), locals(), sort='cumtime')
 
 if __name__ == '__main__':
     unittest.main()
