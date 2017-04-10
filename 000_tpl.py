@@ -1,4 +1,10 @@
 import unittest
+from pprint import pprint
+import re
+import cProfile
+import heapq
+import collections
+import itertools
 
 '''
 
@@ -65,46 +71,40 @@ def tree_draw(root):
     t.hideturtle()
     turtle.mainloop()
 
-# https://discuss.leetcode.com/topic/85778/dfs-c-python-solutions
-# by @zqfan
-
 
 class Solution(object):
-    def longestConsecutive(self, root):
-        """
-        :type root: TreeNode
-        :rtype: int
-        """
-        longest = [0]
-        def dfs(n, p):
-            if n is None:
-                return 0, 0
-            li, ld = dfs(n.left, n)
-            ri, rd = dfs(n.right, n)
-            longest[0] = max(longest[0], li + rd + 1, ld + ri + 1)
-            if n.val == p.val + 1:
-                return max(li, ri) + 1, 0
-            if n.val == p.val - 1:
-                return 0, max(ld, rd) + 1
-            return 0, 0
-        dfs(root, root)
-        return longest[0]
+
+    def calculate(self, s):
+        tokens = re.findall('\d+|\S', s)
+        total = 0
+        signs = [1]
+        sign = 1
+        i = 0
+        while i < len(tokens):
+            if tokens[i] == '(':
+                signs.append(signs[-1] * sign)
+                sign = 1
+            if tokens[i] == ')':
+                signs.pop()
+            if tokens[i] == '+':
+                sign = 1
+            if tokens[i] == '-':
+                sign = -1
+            if tokens[i].isdigit():
+                total += int(tokens[i]) * sign * signs[-1]
+            i += 1
+        return total
 
 
 class Test(unittest.TestCase):
 
     def test(self):
-        case = tree_deserialize('[1,2,3]')
-        assert Solution().longestConsecutive(case) == 2
-        case = tree_deserialize(
-            '[1,2,3,4,10,null,null,5,null,null,9,6,null,null,8]')
-        assert Solution().longestConsecutive(case) == 3
-        case = '[-1,-2,null,-3,null,-4]'
-        case = tree_deserialize(case)
-        assert Solution().longestConsecutive(case) == 4
-
+        case = "1+7-(7+3+3)+6-3+1"
+        assert Solution().calculate(case) == -1
         #cProfile.runctx('Solution().calculate(case)', globals(), locals(), sort='cumtime')
 
+    def test_tree_draw(self):
+        tree_draw(tree_deserialize('[1,2,3,4,5,6,7]'))
 
 if __name__ == '__main__':
     unittest.main()
