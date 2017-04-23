@@ -5,7 +5,6 @@ import cProfile
 import heapq
 import collections
 import itertools
-import numpy as np
 
 '''
 
@@ -74,38 +73,32 @@ def tree_draw(root):
 
 
 class Solution(object):
-
-    def calculate(self, s):
-        tokens = re.findall('\d+|\S', s)
-        total = 0
-        signs = [1]
-        sign = 1
-        i = 0
-        while i < len(tokens):
-            if tokens[i] == '(':
-                signs.append(signs[-1] * sign)
-                sign = 1
-            if tokens[i] == ')':
-                signs.pop()
-            if tokens[i] == '+':
-                sign = 1
-            if tokens[i] == '-':
-                sign = -1
-            if tokens[i].isdigit():
-                total += int(tokens[i]) * sign * signs[-1]
-            i += 1
-        return total
+    def findTilt(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        tree_tilt = [0]
+        def dfs(n):
+            if n is None: return 0
+            l_sum = dfs(n.left)
+            r_sum = dfs(n.right)
+            Sum = l_sum + r_sum
+            tilt = abs(l_sum - r_sum)
+            tree_tilt[0] += tilt
+            return Sum + n.val
+        dfs(root)
+        return tree_tilt[0]
 
 
 class Test(unittest.TestCase):
 
     def test(self):
-        case = "1+7-(7+3+3)+6-3+1"
-        assert Solution().calculate(case) == -1
+        case = tree_deserialize("[1,2,3]")
+        assert Solution().findTilt(case) == 1
+        case = tree_deserialize("[1,2,3,4,5,6,7]")
+        assert Solution().findTilt(case) == 7
         #cProfile.runctx('Solution().calculate(case)', globals(), locals(), sort='cumtime')
-
-    def test_tree_draw(self):
-        tree_draw(tree_deserialize('[1,2,3,4,5,6,7]'))
 
 if __name__ == '__main__':
     unittest.main()
