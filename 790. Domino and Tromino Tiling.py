@@ -80,8 +80,8 @@ class Solution(object):
         :type N: int
         :rtype: int
         """
-        dp1 = [1,2]
-        dp2 = [0,1]
+        dp1 = [1,2] # solutions numbers
+        dp2 = [0,1] # solutions numbers for tiling with the top-right (or bottom-right) cell missing
         div = 10**9 + 7
         if N <= 2: return dp1[N-1]
         while len(dp1) < N:

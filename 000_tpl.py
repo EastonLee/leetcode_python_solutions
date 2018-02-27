@@ -104,7 +104,7 @@ class Test(unittest.TestCase):
         assert Solution().calculate(case) == -1
         #cProfile.runctx('Solution().calculate(case)', globals(), locals(), sort='cumtime')
 
-    def test_tree_draw(self):
+    def est_tree_draw(self):
         tree_draw(tree_deserialize('[1,2,3,4,5,6,7]'))
 
 if __name__ == '__main__':
