@@ -3,6 +3,7 @@ from pprint import pprint
 import re
 import cProfile
 import heapq
+import bisect
 import collections
 import itertools
 import numpy as np
@@ -108,4 +109,4 @@ class Test(unittest.TestCase):
         tree_draw(tree_deserialize('[1,2,3,4,5,6,7]'))
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(exit=False)
