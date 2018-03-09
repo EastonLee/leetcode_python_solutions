@@ -121,6 +121,37 @@ class Solution(object):
             m = (l + r) / 2
         return 5 if no_of0(m) == K else 0
 
+    # this is a better solution
+    # https://leetcode.com/problems/preimage-size-of-factorial-zeroes-function/discuss/117632/binary-search-python-code-40ms
+    def preimageSizeFZF2(self, K):
+        # return the no of tailing 0s ( = 5s as factor ) in factorial(n)
+        def nzero(n):
+            f = 5
+            cnt = 0
+            while f <= n:
+                cnt += n // f
+                f *= 5
+            return cnt
+
+        if K == 0:
+            return 5
+
+        min = 1
+        max = K * 5
+        while min < max:
+            mid = (min + max) // 2
+            if nzero(mid) < K:
+                min = mid + 1
+            else:
+                max = mid
+
+        if nzero(min) != K:
+            return 0
+        else:
+            # next = (min // 5 + 1) * 5
+            # return next - min
+            return 5
+
 class Test(unittest.TestCase):
 
     def test(self):
