@@ -76,38 +76,23 @@ def tree_draw(root):
     turtle.mainloop()
 
 
-class Solution(object):
-
-    def calculate(self, s):
-        tokens = re.findall('\d+|\S', s)
-        total = 0
-        signs = [1]
-        sign = 1
-        i = 0
-        while i < len(tokens):
-            if tokens[i] == '(':
-                signs.append(signs[-1] * sign)
-                sign = 1
-            if tokens[i] == ')':
-                signs.pop()
-            if tokens[i] == '+':
-                sign = 1
-            if tokens[i] == '-':
-                sign = -1
-            if tokens[i].isdigit():
-                total += int(tokens[i]) * sign * signs[-1]
-            i += 1
-        return total
-
+class Solution:
+    def numJewelsInStones(self, J, S):
+        """
+        :type J: str
+        :type S: str
+        :rtype: int
+        """
+        return len([i for i in S if i in J])
 
 class Test(unittest.TestCase):
-
+    
     def test(self):
         cases = [
-            "1+7-(7+3+3)+6-3+1"
+            ["aA", "aAAbbbb"]
         ]
         for c in cases:
-            assert Solution().calculate(c) == -1
+            assert Solution().numJewelsInStones(*c) == 3
         #cProfile.runctx('Solution().calculate(case)', globals(), locals(), sort='cumtime')
 
     def est_tree_draw(self):
