@@ -104,10 +104,10 @@ class Test(unittest.TestCase):
 
     def test(self):
         cases = [
-            "1+7-(7+3+3)+6-3+1"
+            ["1+7-(7+3+3)+6-3+1", -1]
         ]
-        for c in cases:
-            assert Solution().calculate(c) == -1
+        for ci, co in cases:
+            assert Solution().calculate(ci) == co
         #cProfile.runctx('Solution().calculate(case)', globals(), locals(), sort='cumtime')
 
     def est_tree_draw(self):
