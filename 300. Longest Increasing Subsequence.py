@@ -3,7 +3,6 @@ from typing import List
 
 
 class Solution(object):
-    # this method only records the tail num and the length of the longest increasing subsequence
     def lengthOfLIS(self, nums: List[int]) -> int:
         tails = [0] * len(nums)
         size = 0
