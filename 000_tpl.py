@@ -57,6 +57,7 @@ def tree_draw(root):
         t.penup()
         t.goto(x, y)
         t.pendown()
+
     def draw(node, x, y, dx):
         if node:
             t.goto(x, y)
@@ -65,6 +66,7 @@ def tree_draw(root):
             draw(node.left, x - dx, y - 60, dx / 2)
             jumpto(x, y - 20)
             draw(node.right, x + dx, y - 60, dx / 2)
+
     import turtle
     t = turtle.Turtle()
     t.speed(0)
@@ -74,6 +76,16 @@ def tree_draw(root):
     draw(root, 0, 30 * h, 40 * h)
     t.hideturtle()
     turtle.mainloop()
+
+
+# tree by level
+def tree_serialize(root):
+    ans = []
+    level = [root]
+    while any(level):
+        ans.extend(node.val if node else None for node in level)
+        level = [kid for node in level for kid in (node.left, node.right) if node]
+    return ans
 
 
 class Solution(object):
@@ -113,6 +125,7 @@ class Test(unittest.TestCase):
 
     def est_tree_draw(self):
         tree_draw(tree_deserialize('[1,2,3,4,5,6,7]'))
+
 
 if __name__ == '__main__':
     unittest.main(exit=False)
