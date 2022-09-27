@@ -1,43 +1,30 @@
 import unittest
-from typing import List
+from collections import Counter
 
 
-# find paths with all nodes' value not greater than val
-# edges are undirected, avoid cycles
-def findPaths(edges: List[List[int]], values: List[int], start: int, end: int, val: int, path: List[int]) -> List[
-    List[int]]:
-    if start == end:
-        return [[start]]
-    paths = []
-    path = path + [start]
-    for i in range(len(edges)):
-        if edges[i][0] == start and edges[i][1] not in path and values[edges[i][1]] <= val:
-            paths += [[start] + p for p in findPaths(edges, values, edges[i][1], end, val, path)]
-        elif edges[i][1] == start and edges[i][0] not in path and values[edges[i][0]] <= val:
-            paths += [[start] + p for p in findPaths(edges, values, edges[i][0], end, val, path)]
-
-    return paths
-
-
-# find node pairs with same start and end node
-def findPairs(values: List[int]) -> List[List[int]]:
-    pairs = []
-    for i in range(len(values)):
-        for j in range(i + 1, len(values)):
-            if values[i] == values[j]:
-                pairs.append([i, j, values[i]])
-    return pairs
+# https://leetcode.com/problems/number-of-good-paths/discuss/2621772/C%2B%2B-or-Java-or-Diagram-or-Union-Find
+# https://leetcode.com/problems/number-of-good-paths/discuss/2620680/Python-Union-Find-Solution
 
 
 class Solution:
-    def numberOfGoodPaths(self, vals: List[int], edges: List[List[int]]) -> int:
-        pairs = findPairs(vals)
-        ans = len(vals)
-        print(len(vals))
-        for p in pairs:
-            paths = findPaths(edges, vals, p[0], p[1], p[2], [])
-            ans += len(paths)
-        return ans
+    def numberOfGoodPaths(self, vals, edges):
+        res = len(vals)
+        parent = [i for i in range(len(vals))]
+        count = [Counter({vals[i]: 1}) for i in range(len(vals))]
+        edges = sorted([max(vals[i], vals[j]), i, j] for i, j in edges)
+
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        for v, i, j in edges:
+            pi, pj = find(i), find(j)
+            ci, cj = count[pi][v], count[pj][v]
+            res += ci * cj
+            parent[pj] = pi
+            count[pi] = Counter({v: ci + cj})
+        return res
 
 
 class Test(unittest.TestCase):
@@ -164,7 +151,7 @@ class Test(unittest.TestCase):
                         [366, 666], [667, 175], [582, 668], [304, 669], [387, 670], [477, 671], [672, 241], [52, 673],
                         [252, 674], [227, 675], [676, 152], [667, 677], [328, 678], [326, 679], [462, 680], [0, 681],
                         [45, 682], [683, 670], [627, 684], [685, 398], [686, 585], [92, 687], [688, 335], [146, 689],
-                        [448, 690], [213, 691], [490, 692]]}, 0],
+                        [448, 690], [213, 691], [490, 692]]}, 728],
         ]
         for ci, co in cases:
             result = Solution().numberOfGoodPaths(ci['vals'], ci['edges'])
