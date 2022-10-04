@@ -44,3 +44,11 @@ class DSU(object):
             self.par[yr] = xr
             self.rnk[xr] += 1
         return True
+
+
+def DFS():
+    pass
+
+
+def BFS():
+    pass
