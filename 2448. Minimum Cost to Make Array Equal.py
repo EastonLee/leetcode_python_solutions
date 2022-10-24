@@ -16,6 +16,7 @@ Return the minimum total cost such that all the elements of the array nums becom
 # find the min value of a function f(x) = sum(cost[i] * abs(nums[i] - x))
 # we assume the function is convex, first monotonic decreasing and then monotonic increasing (I cannot prove it)
 # we can find the min value by binary search
+# a better solution and its proof https://leetcode.com/problems/minimum-moves-to-equal-array-elements-ii/solutions/2215732/c-3-approaches-full-explanation/
 def minValueOfFunction(start: int, end: int, nums: List[int], cost: List[int]) -> int:
     if start == end:
         return sum([cost[i] * abs(nums[i] - start) for i in range(len(nums))])
